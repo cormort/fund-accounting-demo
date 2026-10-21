@@ -1,0 +1,16 @@
+name: Sync to Hugging Face Space
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # GitHub is the source of truth; the Space's history is overwritten.
+      - run: git push --force "https://cormort:${HF_TOKEN}@huggingface.co/spaces/cormort/fund-accounting-demo" HEAD:main
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
